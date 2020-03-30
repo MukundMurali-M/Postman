@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "69319e38-998c-4913-b3b2-e651c9779192",
+		"name": "Application Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET AAD Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "900c4714-7e68-409c-807c-08b12129d369",
+						"exec": [
+							"pm.test(pm.info.requestName, () => {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.not.have.jsonBody('error');",
+							"});",
+							"pm.globals.set(\"bearerToken\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{clientId}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{clientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "{{resource}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{tenantId}}/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{tenantId}}",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start Application Gateway",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://management.azure.com/subscriptions/38de17e8-591a-4aee-8eba-aded6f033a00/resourceGroups/ApplicationGW/providers/Microsoft.Network/applicationGateways/V1/start?api-version=2018-07-01",
+					"protocol": "https",
+					"host": [
+						"management",
+						"azure",
+						"com"
+					],
+					"path": [
+						"subscriptions",
+						"38de17e8-591a-4aee-8eba-aded6f033a00",
+						"resourceGroups",
+						"ApplicationGW",
+						"providers",
+						"Microsoft.Network",
+						"applicationGateways",
+						"V1",
+						"start"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "2018-07-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop Application Gateway",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://management.azure.com/subscriptions/38de17e8-591a-4aee-8eba-aded6f033a00/resourceGroups/ApplicationGW/providers/Microsoft.Network/applicationGateways/V1/stop?api-version=2018-07-01",
+					"protocol": "https",
+					"host": [
+						"management",
+						"azure",
+						"com"
+					],
+					"path": [
+						"subscriptions",
+						"38de17e8-591a-4aee-8eba-aded6f033a00",
+						"resourceGroups",
+						"ApplicationGW",
+						"providers",
+						"Microsoft.Network",
+						"applicationGateways",
+						"V1",
+						"stop"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "2018-07-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Application gateway",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://management.azure.com/subscriptions/38de17e8-591a-4aee-8eba-aded6f033a00/resourceGroups/ApplicationGW/providers/Microsoft.Network/applicationGateways/V1?api-version=2018-07-01",
+					"protocol": "https",
+					"host": [
+						"management",
+						"azure",
+						"com"
+					],
+					"path": [
+						"subscriptions",
+						"38de17e8-591a-4aee-8eba-aded6f033a00",
+						"resourceGroups",
+						"ApplicationGW",
+						"providers",
+						"Microsoft.Network",
+						"applicationGateways",
+						"V1"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "2018-07-01"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"protocolProfileBehavior": {}
+}
